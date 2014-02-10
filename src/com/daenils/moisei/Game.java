@@ -3,6 +3,7 @@ package com.daenils.moisei;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.*;
 
@@ -101,6 +102,9 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Times New Roman", 0, 32));
+		g.drawString("Hi!", 150, 150);
 		
 		g.dispose();
 		bs.show();
