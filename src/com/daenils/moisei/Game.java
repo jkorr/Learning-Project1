@@ -1,3 +1,10 @@
+/*
+ * Learning Project - Moisei
+ * 
+ * this learning project shall be a pong game (probably)
+ * 
+ */
+
 package com.daenils.moisei;
 
 import java.awt.Canvas;
@@ -9,17 +16,20 @@ import java.awt.image.*;
 
 import javax.swing.JFrame;
 
+import com.daenils.moisei.graphics.Background;
 import com.daenils.moisei.graphics.Screen;
 
 public class Game extends Canvas implements Runnable {
 
+	private static final long serialVersionUID = 1L;
 	private static int scale = 3;
-	private static int width = 320;
-	private static int height = (width / 16 * 9);
+	public static int width = 320;
+	public static int height = width / 16 * 9;
 	public static String title = "Moisei";
 	
 	private Thread thread;
 	private JFrame frame;
+	private Background bg0 = new Background("/textures/backgrounds/bg0.png");
 	
 	private boolean running = false;
 	
@@ -96,16 +106,15 @@ public class Game extends Canvas implements Runnable {
 		
 		screen.clear();
 		
+		
+		screen.renderBackground(bg0);
+		
 		for (int i = 0; i < pixels.length; i++)
 			pixels[i] = screen.pixels[i];
 		
 		Graphics g = bs.getDrawGraphics();
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Times New Roman", 0, 32));
-		g.drawString("Hi!", 150, 150);
-		
+		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+
 		g.dispose();
 		bs.show();
 	}
@@ -122,5 +131,4 @@ public class Game extends Canvas implements Runnable {
 		
 		game.start();
 	}
-	
 }
