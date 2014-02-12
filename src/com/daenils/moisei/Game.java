@@ -16,8 +16,11 @@ import java.awt.image.*;
 
 import javax.swing.JFrame;
 
+import com.daenils.moisei.entity.Paddle;
 import com.daenils.moisei.graphics.Background;
 import com.daenils.moisei.graphics.Screen;
+import com.daenils.moisei.graphics.Sprite;
+import com.daenils.moisei.input.Keyboard;
 
 public class Game extends Canvas implements Runnable {
 
@@ -29,11 +32,12 @@ public class Game extends Canvas implements Runnable {
 	
 	private Thread thread;
 	private JFrame frame;
-	private Background bg0 = new Background("/textures/backgrounds/bg0.png");
 	
 	private boolean running = false;
 	
 	private Screen screen;
+	private Keyboard key;
+	private Paddle player1;
 	
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ( (DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -46,12 +50,17 @@ public class Game extends Canvas implements Runnable {
 		
 		screen = new Screen(width, height);
 		frame = new JFrame();
+		key = new Keyboard();
+		player1 = new Paddle(5, 5, key);
+		
+		addKeyListener(key);
 	}
 	
 	public synchronized void start() {
 		running = true;
 		thread = new Thread(this, "Display");
 		thread.start();
+		requestFocus();
 	}
 	
 	public synchronized void stop() {
@@ -71,6 +80,7 @@ public class Game extends Canvas implements Runnable {
 		double delta = 0;
 		int frames = 0, updates = 0;
 		
+		requestFocus();
 		while (running) {
 			long now = System.nanoTime();
 			delta += ( now - lastTime ) / ns;
@@ -94,7 +104,8 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void update() {
-		
+		key.update();
+		player1.update();
 	}
 
 	public void render() {
@@ -106,8 +117,10 @@ public class Game extends Canvas implements Runnable {
 		
 		screen.clear();
 		
+		screen.render();
+		player1.render(screen);
 		
-		screen.renderBackground(bg0);
+		screen.renderSprite(width / 2, height / 2, Sprite.ball); // test line as of now
 		
 		for (int i = 0; i < pixels.length; i++)
 			pixels[i] = screen.pixels[i];
@@ -130,5 +143,6 @@ public class Game extends Canvas implements Runnable {
 		game.frame.setVisible(true);
 		
 		game.start();
+		
 	}
 }

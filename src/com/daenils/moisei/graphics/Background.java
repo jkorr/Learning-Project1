@@ -23,15 +23,13 @@ public class Background {
 	}
 
 	public void update() {
-
 	}
 
 
 	private void load() {
 		pixels = new int[width * height];
 		try {
-			BufferedImage image = ImageIO.read(Background.class
-					.getResource(path));
+			BufferedImage image = ImageIO.read(Background.class.getResource(path));
 			int w = image.getWidth();
 			int h = image.getHeight();
 			image.getRGB(0, 0, w, h, pixels, 0, w);
